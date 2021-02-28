@@ -2,5 +2,6 @@
     name: Fix License headers of python files
     description: "Checks for license header with appropriate copyright year and inserts a header if required"
     entry: license_check
+    verbose: true
     language: python
     files: '.*/.*'

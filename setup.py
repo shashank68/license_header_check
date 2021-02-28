@@ -4,7 +4,7 @@ from setuptools import setup
 setup(
     name='License Header check pre-commit hook',
     description='Fixes license header of python files',
-    version='0.0.1',
+    version='1.1',
     packages=find_packages('.'),
     entry_points={
         'console_scripts': [

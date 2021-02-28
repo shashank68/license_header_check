@@ -37,25 +37,25 @@ def process_files(args, changed_files):
         ["git", "status", "--porcelain"], stdout=subprocess.PIPE
     )
     files_to_be_committed = files_to_be_committed.stdout.decode("utf-8")
-    files_to_be_committed = files_to_be_committed.split("\n")
+    files_to_be_committed = files_to_be_committed.split("\n")[:-1]
 
     commit_files = []
     for file_path in files_to_be_committed:
-        commit_files.append(file_path[2:])
+        commit_files.append(file_path[3:])
 
     for src_filepath in args.filenames:
-
         with open(src_filepath) as src_file:
             src_file_content = src_file.readlines()
-        res = subprocess.run(
-            ["git", "log", "-1", '--pretty="format:%ci', src_filepath],
-            stdout=subprocess.PIPE,
-        )
-        last_modified_year = res.stdout.decode("utf-8")[8:12]
 
-        # If the file has not been modified this year skip it.
-        if last_modified_year != CURRENT_YEAR and src_filepath not in commit_files:
-            continue
+        if src_filepath not in commit_files:
+            res = subprocess.run(
+                ["git", "log", "-1", '--pretty="format:%ci', src_filepath],
+                stdout=subprocess.PIPE,
+            )
+            last_modified_year = res.stdout.decode("utf-8")[8:12]
+            # If the file has not been modified this year skip it.
+            if last_modified_year != CURRENT_YEAR:
+                continue
 
         if len(src_file_content) >= 2 and src_file_content[0] == FIRST_LINE:
             # License header found. Check the year
