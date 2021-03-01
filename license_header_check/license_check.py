@@ -49,7 +49,7 @@ def process_files(args, changed_files):
 
         if src_filepath not in commit_files:
             res = subprocess.run(
-                ["git", "log", "-1", '--pretty="format:%ci', src_filepath],
+                ["git", "log", "-1", '--pretty="format:%ci"', src_filepath],
                 stdout=subprocess.PIPE,
             )
             last_modified_year = res.stdout.decode("utf-8")[8:12]
